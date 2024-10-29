@@ -24,10 +24,16 @@
 }
 
 .border {
-  border-color: #d75f5f;
+  border-color: #c6c6c6;
   border-style: solid;
   border-radius: 3px;
   border-width: 2px;
+  border-left-style: dashed;
+  border-right-style: dashed;
+}
+
+.border:hover {
+  border-color: #d75f5f;
 }
 
 .artistList {
