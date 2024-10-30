@@ -1,9 +1,12 @@
 <script setup lang="ts">
+import ArtistList from './components/ArtistList.vue';
 </script>
 
 <template>
   <div class="layout">
-    <div class="artistList border"></div>
+    <div class="artistList border">
+      <ArtistList />
+    </div>
     <div class="titleInfo border"></div>
     <div class="playInfo border"></div>
   </div>
@@ -40,12 +43,14 @@
   grid-area: artistList;
   margin-top: 20px;
   margin-left: 20px;
+  overflow: scroll;
 }
 
 .titleInfo {
   grid-area: titleInfo;
   margin-top: 20px;
   margin-right: 20px;
+  overflow: scroll;
 }
 
 .playInfo {
