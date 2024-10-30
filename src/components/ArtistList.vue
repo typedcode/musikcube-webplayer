@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+
 const artists = ref([
   {
     name: "Jimi Hendrix"
@@ -62,6 +63,7 @@ const artists = ref([
     name: "Die Ärzte"
   }
 ]);
+
 </script>
 
 <template>
@@ -81,7 +83,7 @@ ul {
 }
 
 li {
-  margin: 2px 0px 2px 0px;
+  margin: 0;
   padding: 0;
   list-style-type: none;
   text-decoration-line: none;

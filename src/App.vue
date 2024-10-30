@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import ArtistList from './components/ArtistList.vue';
+import { useMusikcubeStore } from './stores/musikcube.ts';
+
+useMusikcubeStore();
+
 </script>
 
 <template>
