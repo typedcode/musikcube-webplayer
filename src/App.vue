@@ -8,11 +8,16 @@ useMusikcubeStore();
 
 <template>
   <div class="layout">
-    <div class="artistList border">
+    <fieldset class="artistList border">
+      <legend>artists</legend>
       <ArtistList />
-    </div>
-    <div class="titleInfo border"></div>
-    <div class="playInfo border"></div>
+    </fieldset>
+    <fieldset class="titleInfo border">
+      <legend>tracks</legend>
+    </fieldset>
+    <fieldset class="playInfo border">
+      <legend>playing</legend>
+    </fieldset>
   </div>
 </template>
 
@@ -48,6 +53,7 @@ useMusikcubeStore();
   margin-top: 20px;
   margin-left: 20px;
   overflow: scroll;
+  padding: 0;
 }
 
 .titleInfo {
