@@ -1,75 +1,15 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useMusikcubeStore } from '../stores/musikcube';
 
-const artists = ref([
-  {
-    name: "Jimi Hendrix"
-  },
-  {
-    name: "Metallica"
-  },
-  {
-    name: "Nickelback"
-  },
-  {
-    name: "Sabaton"
-  },
-  {
-    name: "Die Ärzte"
-  },
-  {
-    name: "Jimi Hendrix"
-  },
-  {
-    name: "Metallica"
-  },
-  {
-    name: "Nickelback"
-  },
-  {
-    name: "Sabaton"
-  },
-  {
-    name: "Die Ärzte"
-  },
-  {
-    name: "Jimi Hendrix"
-  },
-  {
-    name: "Metallica"
-  },
-  {
-    name: "Nickelback"
-  },
-  {
-    name: "Sabaton"
-  },
-  {
-    name: "Die Ärzte"
-  },
-  {
-    name: "Jimi Hendrix"
-  },
-  {
-    name: "Metallica"
-  },
-  {
-    name: "Nickelback"
-  },
-  {
-    name: "Sabaton"
-  },
-  {
-    name: "Die Ärzte"
-  }
-]);
+const musikcubeStore = useMusikcubeStore();
 
 </script>
 
 <template>
   <div class="artistListContainer">
     <ul>
-      <li v-for="artist in artists"><a href="">{{ artist.name }}</a></li>
+      <li v-for="artist in musikcubeStore.artists"><a href="">{{ artist.value }}</a></li>
     </ul>
   </div>
 </template>

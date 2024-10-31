@@ -3,7 +3,8 @@ import { defineStore } from 'pinia'
 import { v4 as uuid } from 'uuid';
 
 interface request {
-  id: string
+  id: string,
+  device_id: string
 }
 
 export const useWebSocketHandler = defineStore('webSocketHandler', () => {
@@ -50,11 +51,13 @@ export const useWebSocketHandler = defineStore('webSocketHandler', () => {
 
   const sendRequest = (request: request, responseHandler: Function) => {
     console.log("sending: " + JSON.stringify(request, null, 2));
+    request.device_id = deviceId;
     responseHandlerMap.set(request.id, responseHandler);
     webSocket.value!.send(JSON.stringify(request));
   }
 
   return {
-    init
+    init,
+    sendRequest
   }
 })
