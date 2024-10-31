@@ -19,7 +19,7 @@ export const useWebSocketHandler = defineStore('webSocketHandler', () => {
       console.error(`No Handler for Message ID '${data.id}' found`);
       return;
     }
-
+    responseHandlerMap.delete(data.id);
     handler(data);
   }
 
