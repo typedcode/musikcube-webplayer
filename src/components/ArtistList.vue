@@ -45,7 +45,7 @@ li {
 li div {
   font: inherit;
   display: block;
-  padding: 5px;
+  padding: 2px 5px 2px 5px;
   font: inherit;
   color: #c6c6c6
 }
