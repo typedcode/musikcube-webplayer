@@ -10,6 +10,20 @@ const requestArtistsMessage = {
   }
 };
 
+const requestTracksByArtist = (artistId: number) => {
+  return {
+    "name": "query_tracks_by_category",
+    "type": "request",
+    "id": uuid(),
+    "device_id": "",
+    "options": {
+      "category": "artist",
+      "id": artistId,
+    }
+  }
+};
+
 export {
-  requestArtistsMessage
+  requestArtistsMessage,
+  requestTracksByArtist
 }

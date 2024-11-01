@@ -13,7 +13,6 @@ export const useWebSocketHandler = defineStore('webSocketHandler', () => {
   const deviceId = uuid();
 
   const handleResponse = (data: any) => {
-    console.log('recieved: ' + JSON.stringify(data, null, 2));
     const handler = responseHandlerMap.get(data.id);
 
     if (handler === undefined) {
@@ -50,7 +49,6 @@ export const useWebSocketHandler = defineStore('webSocketHandler', () => {
   }
 
   const sendRequest = (request: request, responseHandler: Function) => {
-    console.log("sending: " + JSON.stringify(request, null, 2));
     request.device_id = deviceId;
     responseHandlerMap.set(request.id, responseHandler);
     webSocket.value!.send(JSON.stringify(request));

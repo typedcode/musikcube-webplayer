@@ -14,6 +14,7 @@ const selectArtist = (event: PointerEvent, artistId: number) => {
   target.classList.add("selected");
 
   selectedArtistDiv.value = target;
+  musikcubeStore.loadTracksForArtist(artistId);
 }
 </script>
 
