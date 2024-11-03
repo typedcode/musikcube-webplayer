@@ -62,6 +62,7 @@ useMusikcubeStore();
   grid-area: titleInfo;
   margin-top: 20px;
   margin-right: 20px;
+  padding: 0;
   overflow: scroll;
 }
 
