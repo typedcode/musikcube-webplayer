@@ -1,9 +1,11 @@
 <script setup lang="ts">
 
+import { usePlayerStore } from '../stores/player.ts';
 import { useMusikcubeStore } from '../stores/musikcube';
 import { ref } from 'vue';
 
 const musikcubeStore = useMusikcubeStore();
+const playerStore = usePlayerStore();
 
 const headlineNeedsToBePrinted = (index: number) => {
   if (index === 0) {
@@ -11,6 +13,10 @@ const headlineNeedsToBePrinted = (index: number) => {
   }
 
   return musikcubeStore.tracks[index].album !== musikcubeStore.tracks[index - 1].album;
+}
+
+const setTrack = (track: string) => {
+  playerStore.setCurrentTrack(track);
 }
 
 </script>
@@ -22,7 +28,7 @@ const headlineNeedsToBePrinted = (index: number) => {
         <tr v-if="headlineNeedsToBePrinted(index)">
           <th colspan="5">{{ track.album }}</th>
         </tr>
-        <tr class="trackRow">
+        <tr @click="setTrack(track.external_id)" class="trackRow">
           <td class="trackNumber">{{ track.track }}</td>
           <td class="trackName">{{ track.title }}</td>
           <td class="trackLength">len</td>

@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import ArtistList from './components/ArtistList.vue';
 import TrackList from './components/TrackList.vue';
+import Player from './components/Player.vue';
+
 import { useMusikcubeStore } from './stores/musikcube.ts';
 
 useMusikcubeStore();
@@ -19,6 +21,7 @@ useMusikcubeStore();
     </fieldset>
     <fieldset class="playInfo border">
       <legend>playing</legend>
+      <Player />
     </fieldset>
   </div>
 </template>
