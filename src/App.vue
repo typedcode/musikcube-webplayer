@@ -20,7 +20,7 @@ useMusikcubeStore();
       <TrackList />
     </fieldset>
     <fieldset class="playInfo border">
-      <legend>playing</legend>
+      <legend>current track</legend>
       <Player />
     </fieldset>
   </div>

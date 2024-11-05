@@ -17,7 +17,8 @@ watch(currentTrack, async (newId) => {
     currentPlayer.value.stop();
   }
 
-  const trackPlayer = await cacheStore.getTrack(newId);
+  console.log("Player: " + JSON.stringify(newId));
+  const trackPlayer = await cacheStore.getTrack(newId.external_id);
   trackPlayer.start();
   currentPlayer.value = trackPlayer;
 });
@@ -25,7 +26,15 @@ watch(currentTrack, async (newId) => {
 </script>
 
 <template>
-
+  <div v-if="currentTrack !== undefined">
+    playing <span class="highlight">{{ currentTrack.title }}</span> by <span class="highlight">{{ currentTrack.artist
+      }}</span> from <span class="highlight">{{ currentTrack.album }}</span>
+  </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.highlight {
+  color: #afd700;
+  font-weight: bold;
+}
+</style>

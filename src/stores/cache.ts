@@ -28,7 +28,7 @@ export const useCacheStore = defineStore('cache', () => {
 
   const getTrack = async (externalId: string): Promise<AudioBufferSourceNode> => {
     const track = await loadTrack(externalId);
-    trackCache.value.push({ externalId: externalId, audioBuffer: track });
+    //trackCache.value.push({ externalId: externalId, audioBuffer: track });
 
     return track;
   }

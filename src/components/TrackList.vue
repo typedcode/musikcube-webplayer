@@ -15,8 +15,9 @@ const headlineNeedsToBePrinted = (index: number) => {
   return musikcubeStore.tracks[index].album !== musikcubeStore.tracks[index - 1].album;
 }
 
-const setTrack = (track: string) => {
-  playerStore.setCurrentTrack(track);
+const setTrack = (track: number) => {
+  console.log("track: " + track);
+  playerStore.setCurrentTrack(musikcubeStore.tracks[track]);
 }
 
 </script>
@@ -28,7 +29,7 @@ const setTrack = (track: string) => {
         <tr v-if="headlineNeedsToBePrinted(index)">
           <th colspan="5">{{ track.album }}</th>
         </tr>
-        <tr @click="setTrack(track.external_id)" class="trackRow">
+        <tr @click="setTrack(index)" class="trackRow">
           <td class="trackNumber">{{ track.track }}</td>
           <td class="trackName">{{ track.title }}</td>
           <td class="trackLength">len</td>
