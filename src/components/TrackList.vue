@@ -1,8 +1,7 @@
 <script setup lang="ts">
 
-import { usePlayerStore } from '../stores/player.ts';
+import { usePlayerStore } from '../stores/player';
 import { useMusikcubeStore } from '../stores/musikcube';
-import { ref } from 'vue';
 
 const musikcubeStore = useMusikcubeStore();
 const playerStore = usePlayerStore();

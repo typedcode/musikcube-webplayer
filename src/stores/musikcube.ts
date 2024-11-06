@@ -2,6 +2,7 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { useWebSocketHandler } from './webSocketHandler';
 import { requestTracksByArtist, requestArtistsMessage } from './messages';
+import { type Track } from '@/types/track';
 
 export const useMusikcubeStore = defineStore('musikcube', () => {
   const loggedIn = ref(false);
@@ -18,7 +19,7 @@ export const useMusikcubeStore = defineStore('musikcube', () => {
 
   const getTracksResponseHandler = (data: any) => {
     console.log(data);
-    tracks.value = data.options.data;
+    tracks.value = data.options.data as Track[];
   };
 
   const getArtistResponseHandler = (data: any) => {
@@ -33,7 +34,7 @@ export const useMusikcubeStore = defineStore('musikcube', () => {
   webSocketHandler.init(loginResponseHandler);
 
   const artists = ref({});
-  const tracks = ref({});
+  const tracks = ref<Track[]>([]);
 
   return {
     loggedIn,
