@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { Track } from '@/types/track';
+import type { Track } from '@/types/Track';
 
 export const usePlayerStore = defineStore('player', () => {
   const currentTrack = ref<Track | undefined>(undefined);

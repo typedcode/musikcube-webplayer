@@ -2,10 +2,10 @@
 import { ref } from 'vue';
 import { useMusikcubeStore } from '../stores/musikcube';
 
-const selectedArtistDiv = ref<HTMLDivElement>(undefined);
+const selectedArtistDiv = ref<HTMLDivElement | undefined>(undefined);
 const musikcubeStore = useMusikcubeStore();
 
-const selectArtist = (event: PointerEvent, artistId: number) => {
+const selectArtist = (event: MouseEvent, artistId: number) => {
   if (selectedArtistDiv.value !== undefined) {
     selectedArtistDiv.value.classList.remove("selected");
   }

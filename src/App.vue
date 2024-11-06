@@ -3,7 +3,7 @@ import ArtistList from './components/ArtistList.vue';
 import TrackList from './components/TrackList.vue';
 import Player from './components/Player.vue';
 
-import { useMusikcubeStore } from './stores/musikcube.ts';
+import { useMusikcubeStore } from './stores/musikcube';
 
 useMusikcubeStore();
 

@@ -12,13 +12,17 @@ const { currentTrack } = storeToRefs(playerStore);
 
 const currentPlayer = ref<AudioBufferSourceNode | undefined>(undefined);
 
-watch(currentTrack, async (newId) => {
+watch(currentTrack, async (newTrack) => {
   if (currentPlayer.value !== undefined) {
     currentPlayer.value.stop();
   }
 
-  console.log("Player: " + JSON.stringify(newId));
-  const trackPlayer = await cacheStore.getTrack(newId.external_id);
+  if (newTrack === undefined) {
+    return;
+  }
+
+  console.log("Player: " + JSON.stringify(newTrack));
+  const trackPlayer = await cacheStore.getTrack(newTrack.external_id);
   trackPlayer.start();
   currentPlayer.value = trackPlayer;
 });
