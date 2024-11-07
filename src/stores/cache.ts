@@ -1,15 +1,16 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
-type cacheEntry = {
+type CacheEntry = {
   externalId: string,
-  audioBuffer: AudioBufferSourceNode
+  ctx: AudioContext,
+  audioBuffer: AudioBuffer
 }
 
 export const useCacheStore = defineStore('cache', () => {
-  const trackCache = ref<cacheEntry[]>([]);
+  const trackCache = ref<CacheEntry[]>([]);
 
-  const loadTrack = async (externalId: string): Promise<AudioBufferSourceNode> => {
+  const loadTrack = async (externalId: string): Promise<CacheEntry> => {
     const ctx = new AudioContext();
 
     const request = new Request(
@@ -23,14 +24,28 @@ export const useCacheStore = defineStore('cache', () => {
     absn.buffer = audioBuffer;
     absn.connect(ctx.destination);
 
-    return absn;
+    return {
+      externalId,
+      ctx,
+      audioBuffer
+    };
   }
 
-  const getTrack = async (externalId: string): Promise<AudioBufferSourceNode> => {
-    const track = await loadTrack(externalId);
-    //trackCache.value.push({ externalId: externalId, audioBuffer: track });
+  const getTrack = async (externalId: string): Promise<CacheEntry> => {
+    for (const entry of trackCache.value) {
+      if (entry.externalId === externalId) {
+        return entry;
+      }
+    }
 
-    return track;
+    if (trackCache.value.length >= import.meta.env.VITE_CACHE_SIZE) {
+      trackCache.value.shift();
+    }
+
+    const cacheEntry = await loadTrack(externalId);
+    trackCache.value.push(cacheEntry);
+
+    return cacheEntry;
   }
 
   return {

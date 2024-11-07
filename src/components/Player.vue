@@ -22,7 +22,11 @@ watch(currentTrack, async (newTrack) => {
   }
 
   console.log("Player: " + JSON.stringify(newTrack));
-  const trackPlayer = await cacheStore.getTrack(newTrack.external_id);
+  const cacheEntry = await cacheStore.getTrack(newTrack.external_id);
+  const trackPlayer: AudioBufferSourceNode = cacheEntry.ctx.createBufferSource()
+  trackPlayer.buffer = cacheEntry.audioBuffer;
+  trackPlayer.connect(cacheEntry.ctx.destination);
+
   trackPlayer.start();
   currentPlayer.value = trackPlayer;
 });
