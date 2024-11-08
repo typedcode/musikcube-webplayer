@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import { usePlayerStore } from '../stores/player';
+import { usePlayerStore } from '../stores/playQueue';
 import { useMusikcubeStore } from '../stores/musikcube';
 
 const musikcubeStore = useMusikcubeStore();
@@ -16,7 +16,7 @@ const headlineNeedsToBePrinted = (index: number) => {
 
 const setTrack = (track: number) => {
   console.log("track: " + track);
-  playerStore.setCurrentTrack(musikcubeStore.tracks[track]);
+  playerStore.setQueue(musikcubeStore.tracks, musikcubeStore.tracks[track]);
 }
 
 </script>

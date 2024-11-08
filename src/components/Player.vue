@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import { storeToRefs } from 'pinia';
-import { usePlayerStore } from '../stores/player';
+import { usePlayerStore } from '../stores/playQueue';
 import { ref, watch } from 'vue';
 import { useCacheStore } from '../stores/cache';
 
@@ -26,10 +26,14 @@ watch(currentTrack, async (newTrack) => {
   const trackPlayer: AudioBufferSourceNode = cacheEntry.ctx.createBufferSource()
   trackPlayer.buffer = cacheEntry.audioBuffer;
   trackPlayer.connect(cacheEntry.ctx.destination);
-
+  trackPlayer.addEventListener('ended', ended);
   trackPlayer.start();
   currentPlayer.value = trackPlayer;
 });
+
+const ended = () => {
+  playerStore.setNextTrack();
+}
 
 </script>
 
