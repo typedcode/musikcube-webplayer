@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
-import { usePlayerStore } from '../stores/playQueue';
+import { usePlayQueueStore } from '../stores/playQueue';
 import { useMusikcubeStore } from '../stores/musikcube';
 
 const musikcubeStore = useMusikcubeStore();
-const playerStore = usePlayerStore();
+const playerStore = usePlayQueueStore();
 
 const headlineNeedsToBePrinted = (index: number) => {
   if (index === 0) {

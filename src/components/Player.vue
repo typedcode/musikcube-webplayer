@@ -1,12 +1,12 @@
 <script setup lang="ts">
 
 import { storeToRefs } from 'pinia';
-import { usePlayerStore } from '../stores/playQueue';
+import { usePlayQueueStore } from '../stores/playQueue';
 import { ref, watch } from 'vue';
 import { useCacheStore } from '../stores/cache';
 
 const cacheStore = useCacheStore();
-const playerStore = usePlayerStore();
+const playerStore = usePlayQueueStore();
 
 const { currentTrack } = storeToRefs(playerStore);
 

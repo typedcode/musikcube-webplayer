@@ -2,13 +2,13 @@ import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import type { Track } from '@/types/Track';
 
-type PlayQueueItem = {
+export type PlayQueueItem = {
   track: Track,
   previousTrack: PlayQueueItem | undefined,
-  nexrTrack: PlayQueueItem | undefined
+  nextTrack: PlayQueueItem | undefined
 }
 
-export const usePlayerStore = defineStore('playQueue', () => {
+export const usePlayQueueStore = defineStore('playQueue', () => {
   const currentTrack = computed(() => {
     if (currentPlaylistItem.value === undefined) {
       return undefined;
@@ -25,7 +25,7 @@ export const usePlayerStore = defineStore('playQueue', () => {
     currentPlaylistItem.value = {
       track: newTrack,
       previousTrack: undefined,
-      nexrTrack: undefined
+      nextTrack: undefined
     }
   };
 
@@ -33,7 +33,7 @@ export const usePlayerStore = defineStore('playQueue', () => {
     firstPlaylistItem.value = {
       track: tracks[0],
       previousTrack: undefined,
-      nexrTrack: undefined
+      nextTrack: undefined
     };
 
     if (firstPlaylistItem.value.track.external_id === trackToPlay.external_id) {
@@ -46,10 +46,10 @@ export const usePlayerStore = defineStore('playQueue', () => {
       const current: PlayQueueItem = {
         track: tracks[i],
         previousTrack: lastPlaylistItem.value,
-        nexrTrack: undefined
+        nextTrack: undefined
       }
 
-      lastPlaylistItem.value.nexrTrack = current;
+      lastPlaylistItem.value.nextTrack = current;
 
       lastPlaylistItem.value = current;
 
@@ -60,13 +60,14 @@ export const usePlayerStore = defineStore('playQueue', () => {
   };
 
   const setNextTrack = () => {
-    currentPlaylistItem.value = currentPlaylistItem.value?.nexrTrack;
+    currentPlaylistItem.value = currentPlaylistItem.value?.nextTrack;
   };
 
   return {
     setCurrentTrack,
     currentTrack,
     setQueue,
-    setNextTrack
+    setNextTrack,
+    firstPlaylistItem
   }
 })
