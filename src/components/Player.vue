@@ -6,9 +6,9 @@ import { ref, watch } from 'vue';
 import { useCacheStore } from '../stores/cache';
 
 const cacheStore = useCacheStore();
-const playerStore = usePlayQueueStore();
+const playQueueStore = usePlayQueueStore();
 
-const { currentTrack } = storeToRefs(playerStore);
+const { currentTrack } = storeToRefs(playQueueStore);
 
 const currentPlayer = ref<AudioBufferSourceNode | undefined>(undefined);
 
@@ -32,7 +32,7 @@ watch(currentTrack, async (newTrack) => {
 });
 
 const ended = () => {
-  playerStore.setNextTrack();
+  playQueueStore.setNextTrack();
 }
 
 </script>

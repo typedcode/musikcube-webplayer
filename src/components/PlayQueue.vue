@@ -1,6 +1,7 @@
 <script setup lang="ts">
 
-import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
+import { computed, ref, watch } from 'vue';
 import { usePlayQueueStore, type PlayQueueItem } from '@/stores/playQueue';
 
 const playQueue = usePlayQueueStore();
@@ -18,13 +19,35 @@ const tracks = computed(() => {
   return result;
 });
 
+const { currentTrack } = storeToRefs(playQueue);
+
+const currentyPlayingTrack = ref<HTMLTableRowElement | undefined>(undefined);
+
+watch(currentTrack, async (newTrack) => {
+  console.log("Hier ist was neues!!!");
+  if (currentyPlayingTrack.value !== undefined) {
+    currentyPlayingTrack.value.classList.remove("active");
+  }
+
+  if (newTrack === undefined) {
+    return;
+  }
+
+  const newElement = document.getElementById(newTrack.external_id) as HTMLTableRowElement;
+
+  newElement.classList.add('active');
+
+  currentyPlayingTrack.value = newElement;
+
+});
 </script>
 
 <template>
   <table>
     <tbody>
       <template v-for="( track, index ) in tracks">
-        <tr class="trackRow">
+        <tr :class="track.track.external_id === currentTrack?.external_id ? 'trackRow active' : 'trackRow'"
+          :id="track.track.external_id">
           <td class="trackNumber">{{ index + 1 }}</td>
           <td class="trackName">{{ track.track.title }}</td>
           <td class="">{{ track.track.album }}</td>
@@ -85,5 +108,10 @@ th {
 
 .trackArtist {
   width: 200px;
+}
+
+.active {
+  color: #d7d75f;
+  background-color: #585858;
 }
 </style>
