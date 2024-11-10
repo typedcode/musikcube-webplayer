@@ -24,7 +24,6 @@ const { currentTrack } = storeToRefs(playQueue);
 const currentyPlayingTrack = ref<HTMLTableRowElement | undefined>(undefined);
 
 watch(currentTrack, async (newTrack) => {
-  console.log("Hier ist was neues!!!");
   if (currentyPlayingTrack.value !== undefined) {
     currentyPlayingTrack.value.classList.remove("active");
   }
