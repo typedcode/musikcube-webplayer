@@ -16,3 +16,7 @@ body {
   height:100%;
 }
 
+.activeRow {
+  color: #d7d75f;
+  background-color: #585858;
+}

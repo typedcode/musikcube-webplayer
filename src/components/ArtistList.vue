@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
+import { storeToRefs } from 'pinia';
 import { useMusikcubeStore } from '../stores/musikcube';
+import { usePlayQueueStore } from '@/stores/playQueue';
 
 const selectedArtistDiv = ref<HTMLDivElement | undefined>(undefined);
 const musikcubeStore = useMusikcubeStore();
@@ -16,13 +18,40 @@ const selectArtist = (event: MouseEvent, artistId: number) => {
   selectedArtistDiv.value = target;
   musikcubeStore.loadTracksForArtist(artistId);
 }
+
+const playQueue = usePlayQueueStore();
+
+const { currentTrack } = storeToRefs(playQueue);
+const currentyPlayingTrack = ref<HTMLDivElement | undefined>(undefined);
+
+watch(currentTrack, async (newTrack) => {
+  if (currentyPlayingTrack.value !== undefined) {
+    currentyPlayingTrack.value.classList.remove("activeRow");
+  }
+
+  if (newTrack === undefined) {
+    return;
+  }
+
+  const newElement = document.getElementById("artistId" + newTrack.artist_id) as HTMLDivElement;
+
+  newElement.classList.add('activeRow');
+
+  currentyPlayingTrack.value = newElement;
+
+});
+
+const concatArtistId = (id: number) => {
+  return "artistId" + id;
+};
+
 </script>
 
 <template>
   <div class="artistListContainer">
     <ul>
       <li v-for="artist in musikcubeStore.artists">
-        <div @click="(event) => selectArtist(event, artist.id)">{{ artist.value }}</div>
+        <div :id="concatArtistId(artist.id)" @click="(event) => selectArtist(event, artist.id)">{{ artist.value }}</div>
       </li>
     </ul>
   </div>

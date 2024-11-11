@@ -45,7 +45,7 @@ watch(currentTrack, async (newTrack) => {
   <table>
     <tbody>
       <template v-for="( track, index ) in tracks">
-        <tr :class="track.track.external_id === currentTrack?.external_id ? 'trackRow active' : 'trackRow'"
+        <tr :class="track.track.external_id === currentTrack?.external_id ? 'trackRow activeRow' : 'trackRow'"
           :id="track.track.external_id">
           <td class="trackNumber">{{ index + 1 }}</td>
           <td class="trackName">{{ track.track.title }}</td>
@@ -107,10 +107,5 @@ th {
 
 .trackArtist {
   width: 200px;
-}
-
-.active {
-  color: #d7d75f;
-  background-color: #585858;
 }
 </style>

@@ -2,9 +2,11 @@
 
 import { usePlayQueueStore } from '../stores/playQueue';
 import { useMusikcubeStore } from '../stores/musikcube';
+import { storeToRefs } from 'pinia';
+import { ref, watch } from 'vue';
 
 const musikcubeStore = useMusikcubeStore();
-const playerStore = usePlayQueueStore();
+const playQueueStore = usePlayQueueStore();
 
 const headlineNeedsToBePrinted = (index: number) => {
   if (index === 0) {
@@ -16,8 +18,28 @@ const headlineNeedsToBePrinted = (index: number) => {
 
 const setTrack = (track: number) => {
   console.log("track: " + track);
-  playerStore.setQueue(musikcubeStore.tracks, musikcubeStore.tracks[track]);
+  playQueueStore.setQueue(musikcubeStore.tracks, musikcubeStore.tracks[track]);
 }
+
+const { currentTrack } = storeToRefs(playQueueStore);
+const currentyPlayingTrack = ref<HTMLTableRowElement | undefined>(undefined);
+
+watch(currentTrack, async (newTrack) => {
+  if (currentyPlayingTrack.value !== undefined) {
+    currentyPlayingTrack.value.classList.remove("activeRow");
+  }
+
+  if (newTrack === undefined) {
+    return;
+  }
+
+  const newElement = document.getElementById(newTrack.external_id) as HTMLTableRowElement;
+
+  newElement.classList.add('activeRow');
+
+  currentyPlayingTrack.value = newElement;
+
+});
 
 </script>
 
@@ -28,7 +50,8 @@ const setTrack = (track: number) => {
         <tr v-if="headlineNeedsToBePrinted(index)">
           <th colspan="5">{{ track.album }}</th>
         </tr>
-        <tr @click="setTrack(index)" class="trackRow">
+        <tr :id="track.external_id" @click="setTrack(index)"
+          :class="track.external_id === currentTrack?.external_id ? 'trackRow activeRow' : 'trackRow'">
           <td class="trackNumber">{{ track.track }}</td>
           <td class="trackName">{{ track.title }}</td>
           <td class="trackLength">len</td>
