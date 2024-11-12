@@ -30,6 +30,10 @@ watch(currentTrack, async (newTrack) => {
   trackPlayer.addEventListener('ended', ended);
   trackPlayer.start();
   currentPlayer.value = trackPlayer;
+
+  if (playQueueStore.currentPlaylistItem?.nextTrack !== undefined) {
+    cacheStore.getTrack(playQueueStore.currentPlaylistItem.nextTrack.track.external_id);
+  }
 });
 
 const ended = () => {

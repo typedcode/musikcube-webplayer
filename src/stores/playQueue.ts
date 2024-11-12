@@ -68,6 +68,7 @@ export const usePlayQueueStore = defineStore('playQueue', () => {
     currentTrack,
     setQueue,
     setNextTrack,
-    firstPlaylistItem
+    firstPlaylistItem,
+    currentPlaylistItem
   }
 })

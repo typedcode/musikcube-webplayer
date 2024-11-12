@@ -29,7 +29,7 @@ export const useCacheStore = defineStore('cache', () => {
       ctx,
       audioBuffer
     };
-  }
+  };
 
   const getTrack = async (externalId: string): Promise<CacheEntry> => {
     for (const entry of trackCache.value) {
