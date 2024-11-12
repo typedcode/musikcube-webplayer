@@ -3,6 +3,7 @@
 import { storeToRefs } from 'pinia';
 import { computed, ref, watch } from 'vue';
 import { usePlayQueueStore, type PlayQueueItem } from '@/stores/playQueue';
+import type { Track } from '@/types/Track';
 
 const playQueue = usePlayQueueStore();
 
@@ -39,13 +40,20 @@ watch(currentTrack, async (newTrack) => {
   currentyPlayingTrack.value = newElement;
 
 });
+
+const playTrackFromQueue = (track: Track) => {
+  console.log("track: " + track);
+  playQueue.playTrackFromQueue(track);
+}
+
 </script>
 
 <template>
   <table>
     <tbody>
       <template v-for="( track, index ) in tracks">
-        <tr :class="track.track.external_id === currentTrack?.external_id ? 'trackRow activeRow' : 'trackRow'"
+        <tr @click="playTrack(track.track)"
+          :class="track.track.external_id === currentTrack?.external_id ? 'trackRow activeRow' : 'trackRow'"
           :id="track.track.external_id">
           <td class="trackNumber">{{ index + 1 }}</td>
           <td class="trackName">{{ track.track.title }}</td>

@@ -29,6 +29,18 @@ export const usePlayQueueStore = defineStore('playQueue', () => {
     }
   };
 
+  const playTrackFromQueue = (trackToPlay: Track) => {
+    let current = firstPlaylistItem.value;
+
+    while (current !== undefined) {
+      if (current.track.external_id === trackToPlay.external_id) {
+        currentPlaylistItem.value = current;
+      }
+
+      current = current.nextTrack;
+    }
+  }
+
   const setQueue = (tracks: Track[], trackToPlay: Track) => {
     firstPlaylistItem.value = {
       track: tracks[0],
@@ -69,6 +81,7 @@ export const usePlayQueueStore = defineStore('playQueue', () => {
     setQueue,
     setNextTrack,
     firstPlaylistItem,
-    currentPlaylistItem
+    currentPlaylistItem,
+    playTrackFromQueue
   }
 })
