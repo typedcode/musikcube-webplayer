@@ -4,6 +4,7 @@ import { storeToRefs } from 'pinia';
 import { usePlayQueueStore } from '../stores/playQueue';
 import { ref, watch } from 'vue';
 import { useCacheStore } from '../stores/cache';
+import delay from '@/delay';
 
 const cacheStore = useCacheStore();
 const playQueueStore = usePlayQueueStore();
@@ -36,7 +37,8 @@ watch(currentTrack, async (newTrack) => {
   }
 });
 
-const ended = () => {
+const ended = async () => {
+  await delay(2000);
   playQueueStore.setNextTrack();
 }
 
