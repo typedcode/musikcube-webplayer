@@ -14,6 +14,7 @@ const currentPlayer = ref<AudioBufferSourceNode | undefined>(undefined);
 
 watch(currentTrack, async (newTrack) => {
   if (currentPlayer.value !== undefined) {
+    currentPlayer.value.removeEventListener("ended", ended);
     currentPlayer.value.stop();
   }
 
