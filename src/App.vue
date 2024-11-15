@@ -5,8 +5,10 @@ import Player from './components/Player.vue';
 import PlayQueue from '@/components/PlayQueue.vue';
 import { ref, computed } from 'vue';
 import { useMusikcubeStore } from './stores/musikcube';
+import { usePlayerStore } from '@/stores/player';
 
 useMusikcubeStore();
+usePlayerStore();
 
 const showTracks = ref(true);
 
