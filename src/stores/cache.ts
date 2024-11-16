@@ -48,8 +48,19 @@ export const useCacheStore = defineStore('cache', () => {
     return cacheEntry;
   }
 
+  const isCached = (externalId: string): boolean => {
+    for (const entry of trackCache.value) {
+      if (entry.externalId === externalId) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   return {
-    getTrack
+    getTrack,
+    isCached
   }
 })
 

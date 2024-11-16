@@ -5,14 +5,14 @@ import { usePlayerStore } from '../stores/player';
 
 const playQueueStore = usePlayerStore();
 
-const { currentTrack } = storeToRefs(playQueueStore);
+const { title, artist, album, state } = storeToRefs(playQueueStore);
 
 </script>
 
 <template>
-  <div v-if="currentTrack !== undefined">
-    playing <span class="highlight">{{ currentTrack.title }}</span> by <span class="highlight">{{ currentTrack.artist
-      }}</span> from <span class="highlight">{{ currentTrack.album }}</span>
+  <div v-if="title !== undefined">
+    {{ state }} <span class="highlight">{{ title }}</span> by <span class="highlight">{{ artist
+      }}</span> from <span class="highlight">{{ album }}</span>
   </div>
 </template>
 

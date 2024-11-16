@@ -52,7 +52,7 @@ const playTrackFromQueue = (track: Track) => {
   <table>
     <tbody>
       <template v-for="( track, index ) in tracks">
-        <tr @click="playTrack(track.track)"
+        <tr @click="playTrackFromQueue(track.track)"
           :class="track.track.external_id === currentTrack?.external_id ? 'trackRow activeRow' : 'trackRow'"
           :id="track.track.external_id">
           <td class="trackNumber">{{ index + 1 }}</td>
