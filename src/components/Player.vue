@@ -3,16 +3,21 @@
 import { storeToRefs } from 'pinia';
 import { usePlayerStore } from '../stores/player';
 
-const playQueueStore = usePlayerStore();
+const playerStore = usePlayerStore();
 
-const { title, artist, album, state } = storeToRefs(playQueueStore);
+const { title, artist, album, state, duration, elapsedTime } = storeToRefs(playerStore);
 
 </script>
 
 <template>
   <div v-if="title !== undefined">
-    {{ state }} <span class="highlight">{{ title }}</span> by <span class="highlight">{{ artist
-      }}</span> from <span class="highlight">{{ album }}</span>
+    <div>
+      {{ state }} <span class="highlight">{{ title }}</span> by <span class="highlight">{{ artist
+        }}</span> from <span class="highlight">{{ album }}</span>
+    </div>
+    <div>
+      {{ elapsedTime }} / {{ duration }}
+    </div>
   </div>
 </template>
 
