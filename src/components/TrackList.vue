@@ -60,7 +60,7 @@ watch(currentTrack, async (newTrack) => {
           :class="track.external_id === currentTrack?.external_id ? 'trackRow activeRow' : 'trackRow'">
           <td class="trackNumber">{{ track.track }}</td>
           <td class="trackName">{{ track.title }}</td>
-          <td class="trackLength">len</td>
+          <td class="trackLength"></td>
           <td class="trackArtist">{{ track.artist }}</td>
         </tr>
       </template>

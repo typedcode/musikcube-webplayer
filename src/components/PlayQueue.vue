@@ -58,7 +58,7 @@ const playTrackFromQueue = (track: Track) => {
           <td class="trackNumber">{{ index + 1 }}</td>
           <td class="trackName">{{ track.track.title }}</td>
           <td class="">{{ track.track.album }}</td>
-          <td class="trackLength">len</td>
+          <td class="trackLength"></td>
           <td class="trackArtist">{{ track.track.artist }}</td>
         </tr>
       </template>
