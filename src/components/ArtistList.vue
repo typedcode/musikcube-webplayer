@@ -41,17 +41,13 @@ watch(currentTrack, async (newTrack) => {
 
 });
 
-const concatArtistId = (id: number) => {
-  return "artistId" + id;
-};
-
 </script>
 
 <template>
   <div class="artistListContainer">
     <ul>
       <li v-for="artist in musikcubeStore.artists">
-        <div :id="concatArtistId(artist.id)" @click="(event) => selectArtist(event, artist.id)">{{ artist.value }}</div>
+        <div :id="'artistId' + artist.id" @click="(event) => selectArtist(event, artist.id)">{{ artist.value }}</div>
       </li>
     </ul>
   </div>

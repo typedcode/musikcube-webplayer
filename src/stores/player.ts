@@ -12,21 +12,35 @@ export const usePlayerStore = defineStore('player', () => {
   const state = ref<'loading' | 'playing' | 'paused' | 'stopped'>();
   let elapsedTimeTimer: ReturnType<typeof setInterval>;
   let pausedAt = 0;
-  let currentTrackCacheEntry: CacheEntry | undefined = undefined;
+  let currentTrackCacheEntry: CacheEntry;
 
   const currentPlayer = ref<AudioBufferSourceNode | undefined>(undefined);
+
   const calculateElapsedTime = () => {
     elapsedTime.value = Date.now() - trackStartTime.value + pausedAt;
   };
 
-  watch(currentTrack, async (newTrack) => {
-    elapsedTime.value = 0;
-    pausedAt = 0;
+  const clearPlayer = () => {
     if (currentPlayer.value !== undefined) {
       currentPlayer.value.removeEventListener("ended", ended);
       currentPlayer.value.stop();
       clearInterval(elapsedTimeTimer);
     }
+  };
+
+  const createPlayer = () => {
+    const trackPlayer: AudioBufferSourceNode = currentTrackCacheEntry.ctx.createBufferSource()
+    trackPlayer.buffer = currentTrackCacheEntry.audioBuffer;
+    trackPlayer.connect(currentTrackCacheEntry.ctx.destination);
+    trackPlayer.addEventListener('ended', ended);
+    return trackPlayer;
+  }
+
+  watch(currentTrack, async (newTrack) => {
+    elapsedTime.value = 0;
+    pausedAt = 0;
+
+    clearPlayer();
 
     if (newTrack === undefined) {
       state.value = 'stopped';
@@ -39,22 +53,23 @@ export const usePlayerStore = defineStore('player', () => {
     }
 
     currentTrackCacheEntry = await cacheStore.getTrack(newTrack.external_id);
-    const trackPlayer: AudioBufferSourceNode = currentTrackCacheEntry.ctx.createBufferSource()
-    trackPlayer.buffer = currentTrackCacheEntry.audioBuffer;
-    trackPlayer.connect(currentTrackCacheEntry.ctx.destination);
-    trackPlayer.addEventListener('ended', ended);
-    trackPlayer.start();
-    trackStartTime.value = Date.now();
-    elapsedTimeTimer = setInterval(calculateElapsedTime, 1000);
+    currentPlayer.value = createPlayer();
 
-    state.value = 'playing';
+    startTrack();
+
     duration.value = secondsToTime(currentTrackCacheEntry.audioBuffer.duration);
-    currentPlayer.value = trackPlayer;
 
     if (playQueueStore.currentPlaylistItem?.nextTrack !== undefined) {
       cacheStore.getTrack(playQueueStore.currentPlaylistItem.nextTrack.track.external_id);
     }
   });
+
+  const startTrack = () => {
+    currentPlayer.value!.start(0, pausedAt / 1000);
+    trackStartTime.value = Date.now();
+    elapsedTimeTimer = setInterval(calculateElapsedTime, 1000);
+    state.value = 'playing';
+  }
 
   const ended = async () => {
     clearInterval(elapsedTimeTimer);
@@ -71,15 +86,9 @@ export const usePlayerStore = defineStore('player', () => {
 
     calculateElapsedTime();
     pausedAt = elapsedTime.value;
-    currentPlayer.value!.removeEventListener('ended', ended);
-    currentPlayer.value!.stop();
-    clearInterval(elapsedTimeTimer);
+    clearPlayer();
 
-    currentPlayer.value = currentTrackCacheEntry!.ctx.createBufferSource()
-    currentPlayer.value.buffer = currentTrackCacheEntry!.audioBuffer;
-    currentPlayer.value.connect(currentTrackCacheEntry!.ctx.destination);
-    currentPlayer.value.addEventListener('ended', ended);
-
+    currentPlayer.value = createPlayer();
     state.value = 'paused';
   }
 
@@ -89,11 +98,7 @@ export const usePlayerStore = defineStore('player', () => {
       return;
     }
 
-    currentPlayer.value!.start(0, pausedAt / 1000);
-    trackStartTime.value = Date.now();
-    elapsedTimeTimer = setInterval(calculateElapsedTime, 1000);
-
-    state.value = 'playing';
+    startTrack();
   }
 
   const trackStartTime = ref<number>(0);
