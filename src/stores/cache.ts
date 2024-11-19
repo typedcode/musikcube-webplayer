@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
-type CacheEntry = {
+export type CacheEntry = {
   externalId: string,
   ctx: AudioContext,
   audioBuffer: AudioBuffer
