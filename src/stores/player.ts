@@ -36,9 +36,13 @@ export const usePlayerStore = defineStore('player', () => {
     return trackPlayer;
   }
 
+  const currentTrackId = ref<string>();
+
   watch(currentTrack, async (newTrack) => {
     elapsedTime.value = 0;
     pausedAt = 0;
+
+    currentTrackId.value = newTrack?.external_id;
 
     clearPlayer();
 
@@ -54,6 +58,10 @@ export const usePlayerStore = defineStore('player', () => {
 
     currentTrackCacheEntry = await cacheStore.getTrack(newTrack.external_id);
     currentPlayer.value = createPlayer();
+
+    if (currentTrackId.value !== newTrack.external_id) {
+      return;
+    }
 
     startTrack();
 
