@@ -5,6 +5,7 @@ import { useMusikcubeStore } from '../stores/musikcube';
 import { storeToRefs } from 'pinia';
 import { ref, watch } from 'vue';
 import type { Track } from '@/types/Track';
+import TrackListMenu from '@/components/TrackListMenu.vue';
 
 const musikcubeStore = useMusikcubeStore();
 const playQueueStore = usePlayQueueStore();
@@ -17,9 +18,9 @@ const headlineNeedsToBePrinted = (index: number) => {
   return musikcubeStore.tracks[index].album !== musikcubeStore.tracks[index - 1].album;
 }
 
-const setTrack = (track: number) => {
-  console.log("track: " + track);
-  playQueueStore.setQueue(musikcubeStore.tracks, musikcubeStore.tracks[track]);
+const setTrack = (track: Track) => {
+  playQueueStore.setQueue(musikcubeStore.tracks, track!);
+  showContextMenu.value = false;
 }
 
 const playAlbum = (albumId: number) => {
@@ -47,18 +48,38 @@ watch(currentTrack, async (newTrack) => {
   currentyPlayingTrack.value = newElement;
 });
 
+const showContextMenu = ref(false);
+const menuX = ref(0);
+const menuY = ref(0);
+const contextMenuData = ref<Track>();
+
+const openContextMenu = (event: MouseEvent, track: Track) => {
+  menuX.value = event.clientX;
+  menuY.value = event.clientY;
+  showContextMenu.value = true;
+  contextMenuData.value = track;
+}
+
+const addToQueue = () => {
+  console.log("hier");
+  playQueueStore.addToQueue(contextMenuData!.value!);
+  showContextMenu.value = false;
+}
+
 </script>
 
 <template>
+  <TrackListMenu v-if="showContextMenu" @add-to-queue="addToQueue" @play-track-clicked="setTrack(contextMenuData!)"
+    :x=menuX :y=menuY />
   <table>
     <tbody>
       <template v-for="( track, index ) in musikcubeStore.tracks">
         <tr v-if="headlineNeedsToBePrinted(index)">
           <th @click="playAlbum(track.album_id)" colspan="5">{{ track.album }}</th>
         </tr>
-        <tr :id="track.external_id" @click="setTrack(index)"
+        <tr @contextmenu.prevent="openContextMenu($event, track)" :id="track.external_id" @click="setTrack(track)"
           :class="track.external_id === currentTrack?.external_id ? 'trackRow activeRow' : 'trackRow'">
-          <td class="trackNumber">{{ track.track }}</td>
+          <td class=" trackNumber">{{ track.track }}</td>
           <td class="trackName">{{ track.title }}</td>
           <td class="trackLength"></td>
           <td class="trackArtist">{{ track.artist }}</td>
