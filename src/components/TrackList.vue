@@ -48,6 +48,10 @@ watch(currentTrack, async (newTrack) => {
 
   const newElement = document.getElementById(newTrack.external_id) as HTMLTableRowElement;
 
+  if (!newElement) {
+    return;
+  }
+
   newElement.classList.add('activeRow');
 
   currentyPlayingTrack.value = newElement;
