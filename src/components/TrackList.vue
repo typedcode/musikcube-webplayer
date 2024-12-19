@@ -23,6 +23,11 @@ const setTrack = (track: Track) => {
   showContextMenu.value = false;
 }
 
+const setSingleTrack = (track: Track) => {
+  playQueueStore.setQueue([track], track!);
+  showContextMenu.value = false;
+}
+
 const playAlbum = (albumId: number) => {
   const albumTracks = musikcubeStore.tracks.filter((track: Track) => track.album_id === albumId);
 
@@ -69,8 +74,8 @@ const addToQueue = () => {
 </script>
 
 <template>
-  <TrackListMenu v-if="showContextMenu" @add-to-queue="addToQueue" @play-track-clicked="setTrack(contextMenuData!)"
-    :x=menuX :y=menuY />
+  <TrackListMenu v-if="showContextMenu" @add-to-queue="addToQueue"
+    @play-track-clicked="setSingleTrack(contextMenuData!)" :x=menuX :y=menuY />
   <table>
     <tbody>
       <template v-for="( track, index ) in musikcubeStore.tracks">
