@@ -3,9 +3,11 @@ import { ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useMusikcubeStore } from '../stores/musikcube';
 import { usePlayQueueStore } from '@/stores/playQueue';
+import { useUiStateStore } from '@/stores/uiState';
 
 const selectedArtistDiv = ref<HTMLDivElement | undefined>(undefined);
 const musikcubeStore = useMusikcubeStore();
+const uiStateStore = useUiStateStore();
 
 const selectArtist = (event: MouseEvent, artistId: number) => {
   if (selectedArtistDiv.value !== undefined) {
@@ -16,6 +18,7 @@ const selectArtist = (event: MouseEvent, artistId: number) => {
   target.classList.add("selected");
 
   selectedArtistDiv.value = target;
+  uiStateStore.setTrackListUiElement('TrackList');
   musikcubeStore.loadTracksForArtist(artistId);
 }
 

@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 import TrackList from '@/components/TrackList.vue';
 import PlayQueue from '@/components/PlayQueue.vue';
 
-export const useuiStateStore = defineStore('uiState', () => {
+export const useUiStateStore = defineStore('uiState', () => {
   type possibleTrackListElements = "TrackList" | "PlayQueue";
   const trackListTitle: Record<possibleTrackListElements, string> = {
     "TrackList": "tracks",

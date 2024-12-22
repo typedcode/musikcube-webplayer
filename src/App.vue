@@ -4,11 +4,11 @@ import TrackList from '@/components/TrackList.vue';
 import Player from './components/Player.vue';
 import { useMusikcubeStore } from './stores/musikcube';
 import { usePlayerStore } from '@/stores/player';
-import { useuiStateStore } from './stores/uiState';
+import { useUiStateStore } from './stores/uiState';
 
 useMusikcubeStore();
 usePlayerStore();
-const uiElementStore = useuiStateStore();
+const uiElementStore = useUiStateStore();
 
 const changeTrackList = () => {
   uiElementStore.setTrackListUiElement(uiElementStore.trackListUiElement === TrackList ? "PlayQueue" : "TrackList");
