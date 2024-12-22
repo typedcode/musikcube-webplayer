@@ -1,21 +1,17 @@
 <script setup lang="ts">
 import ArtistList from './components/ArtistList.vue';
-import TrackList from './components/TrackList.vue';
+import TrackList from '@/components/TrackList.vue';
 import Player from './components/Player.vue';
-import PlayQueue from '@/components/PlayQueue.vue';
-import { ref, computed } from 'vue';
 import { useMusikcubeStore } from './stores/musikcube';
 import { usePlayerStore } from '@/stores/player';
+import { useuiStateStore } from './stores/uiState';
 
 useMusikcubeStore();
 usePlayerStore();
+const uiElementStore = useuiStateStore();
 
-const showTracks = ref(true);
-
-const titleInfoLegend = computed(() => showTracks.value ? 'tracks' : 'play queue');
-
-const changeTitleinfoLegend = () => {
-  showTracks.value = !showTracks.value;
+const changeTrackList = () => {
+  uiElementStore.setTrackListUiElement(uiElementStore.trackListUiElement === TrackList ? "PlayQueue" : "TrackList");
 }
 
 </script>
@@ -27,8 +23,8 @@ const changeTitleinfoLegend = () => {
       <ArtistList />
     </fieldset>
     <fieldset class="titleInfo border">
-      <legend class="pointer" @click="changeTitleinfoLegend">{{ titleInfoLegend }}</legend>
-      <component :is="showTracks ? TrackList : PlayQueue" />
+      <legend class="pointer" @click="changeTrackList()">{{ uiElementStore.trackListLegend() }}</legend>
+      <component :is="uiElementStore.trackListUiElement" />
     </fieldset>
     <fieldset class="playInfo border">
       <legend>current track</legend>
