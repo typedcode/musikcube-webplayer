@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { useWebSocketHandler } from './webSocketHandler';
-import { requestTracksByArtist, requestArtistsMessage } from './messages';
+import { requestTracksByArtist, requestArtistsMessage, requestTracksMetadata } from './messages';
 import { type Track } from '@/types/Track';
 import { type Artist } from '@/types/Artist';
 
@@ -19,9 +19,15 @@ export const useMusikcubeStore = defineStore('musikcube', () => {
   }
 
   const getTracksResponseHandler = (data: any) => {
-    console.log(data);
-    tracks.value = data.options.data as Track[];
+    trackIDs.value = (data.options.data as Track[]).map(track => track.id);
+
+    webSocketHandler.sendRequest(requestTracksMetadata(trackIDs.value), trackMetadataHandler);
   };
+
+  const trackMetadataHandler = (data: any) => {
+    trackData.value = JSON.parse(data.options.raw_query_data).result;
+    tracks.value = trackIDs.value.map(id => trackData.value[id]);
+  }
 
   const getArtistResponseHandler = (data: any) => {
     artists.value = data.options.data as Artist[];
@@ -35,7 +41,9 @@ export const useMusikcubeStore = defineStore('musikcube', () => {
   webSocketHandler.init(loginResponseHandler);
 
   const artists = ref<Artist[]>([]);
+  const trackData = ref<any[]>([]);
   const tracks = ref<Track[]>([]);
+  const trackIDs = ref<number[]>([]);
 
   return {
     loggedIn,

@@ -36,7 +36,7 @@ watch(currentTrack, async (newTrack) => {
     return;
   }
 
-  const newElement = document.getElementById("artistId" + newTrack.artist_id) as HTMLDivElement;
+  const newElement = document.getElementById("artistId" + newTrack.visual_artist_id) as HTMLDivElement;
 
   newElement.classList.add('activeRow');
 

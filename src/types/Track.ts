@@ -8,8 +8,9 @@ export type Track = {
     album_artist: string,
     album_artist_id: number,
     artist: string,
-    artist_id: number,
+    visual_artist_id: number,
     genre: string,
-    genre_id: number
+    genre_id: number,
+    duration: number
 };
 

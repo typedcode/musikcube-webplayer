@@ -6,6 +6,7 @@ import { storeToRefs } from 'pinia';
 import { ref, watch } from 'vue';
 import type { Track } from '@/types/Track';
 import TrackListMenu from '@/components/TrackListMenu.vue';
+import secondsToTime from '@/common/secondsToTime';
 
 const musikcubeStore = useMusikcubeStore();
 const playQueueStore = usePlayQueueStore();
@@ -90,7 +91,7 @@ const addToQueue = () => {
           :class="track.external_id === currentTrack?.external_id ? 'trackRow activeRow' : 'trackRow'">
           <td class=" trackNumber">{{ track.track }}</td>
           <td class="trackName">{{ track.title }}</td>
-          <td class="trackLength"></td>
+          <td class="trackLength">{{ secondsToTime(track.duration) }}</td>
           <td class="trackArtist">{{ track.artist }}</td>
         </tr>
       </template>
@@ -146,7 +147,9 @@ th:hover {
 }
 
 .trackLength {
-  width: 50px;
+  padding-right: 50px;
+  text-align: right;
+  width: 80px;
 }
 
 .trackArtist {

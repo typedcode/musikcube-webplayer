@@ -4,6 +4,7 @@ import { storeToRefs } from 'pinia';
 import { computed, ref, watch } from 'vue';
 import { usePlayQueueStore, type PlayQueueItem } from '@/stores/playQueue';
 import type { Track } from '@/types/Track';
+import secondsToTime from '@/common/secondsToTime';
 
 const playQueue = usePlayQueueStore();
 
@@ -58,7 +59,7 @@ const playTrackFromQueue = (track: Track) => {
           <td class="trackNumber">{{ index + 1 }}</td>
           <td class="trackName">{{ track.track.title }}</td>
           <td class="">{{ track.track.album }}</td>
-          <td class="trackLength"></td>
+          <td class="trackLength">{{ secondsToTime(track.track.duration) }}</td>
           <td class="trackArtist">{{ track.track.artist }}</td>
         </tr>
       </template>
@@ -110,7 +111,9 @@ th {
 }
 
 .trackLength {
-  width: 50px;
+  padding-right: 50px;
+  text-align: right;
+  width: 80px;
 }
 
 .trackArtist {
