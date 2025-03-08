@@ -68,6 +68,10 @@ const changeTrackList = () => {
   padding: 0;
 }
 
+.artistList legend {
+  margin-left: 10px;
+}
+
 .titleInfo {
   grid-area: titleInfo;
   margin-top: 20px;
@@ -76,11 +80,16 @@ const changeTrackList = () => {
   overflow: auto;
 }
 
+.titleInfo legend {
+  margin-left: 10px;
+}
+
 .playInfo {
   grid-area: playInfo;
   margin-left: 20px;
   margin-right: 20px;
   margin-bottom: 20px;
+  padding: 10px;
 }
 
 .pointer {
