@@ -5,10 +5,6 @@ import PlayQueue from '@/components/PlayQueue.vue';
 
 export const useUiStateStore = defineStore('uiState', () => {
   type possibleTrackListElements = "TrackList" | "PlayQueue";
-  const trackListTitle: Record<possibleTrackListElements, string> = {
-    "TrackList": "tracks",
-    "PlayQueue": "play queue"
-  }
   const currentTrackListElement = ref<possibleTrackListElements>("TrackList");
 
   const trackListElementMap: Record<"TrackList" | "PlayQueue", Component> = {
@@ -22,13 +18,9 @@ export const useUiStateStore = defineStore('uiState', () => {
     currentTrackListElement.value = uiElement;
   }
 
-  const trackListLegend = () => {
-    return trackListTitle[currentTrackListElement.value];
-  }
-
   return {
     trackListUiElement,
-    setTrackListUiElement,
-    trackListLegend
+    setTrackListUiElement
   }
 })
+

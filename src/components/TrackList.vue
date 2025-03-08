@@ -7,9 +7,11 @@ import { ref, watch } from 'vue';
 import type { Track } from '@/types/Track';
 import TrackListMenu from '@/components/TrackListMenu.vue';
 import secondsToTime from '@/common/secondsToTime';
+import { useUiStateStore } from '@/stores/uiState';
 
 const musikcubeStore = useMusikcubeStore();
 const playQueueStore = usePlayQueueStore();
+const uiStateStore = useUiStateStore();
 
 const headlineNeedsToBePrinted = (index: number) => {
   if (index === 0) {
@@ -71,35 +73,54 @@ const openContextMenu = (event: MouseEvent, track: Track) => {
 }
 
 const addToQueue = () => {
-  console.log("hier");
   playQueueStore.addToQueue(contextMenuData!.value!);
   showContextMenu.value = false;
 }
 
+const changeTrackList = () => {
+  uiStateStore.setTrackListUiElement("PlayQueue");
+}
+
+
 </script>
 
 <template>
-  <TrackListMenu v-if="showContextMenu" @add-to-queue="addToQueue"
-    @play-track-clicked="setSingleTrack(contextMenuData!)" :x=menuX :y=menuY />
-  <table>
-    <tbody>
-      <template v-for="( track, index ) in musikcubeStore.tracks">
-        <tr v-if="headlineNeedsToBePrinted(index)">
-          <th @click="playAlbum(track.album_id)" colspan="5">{{ track.album }}</th>
-        </tr>
-        <tr @contextmenu.prevent="openContextMenu($event, track)" :id="track.external_id" @click="setTrack(track)"
-          :class="track.external_id === currentTrack?.external_id ? 'trackRow activeRow' : 'trackRow'">
-          <td class=" trackNumber">{{ track.track }}</td>
-          <td class="trackName">{{ track.title }}</td>
-          <td class="trackLength">{{ secondsToTime(track.duration) }}</td>
-          <td class="trackArtist">{{ track.artist }}</td>
-        </tr>
-      </template>
-    </tbody>
-  </table>
+  <fieldset class="titleInfo border">
+    <legend class="pointer" @click="changeTrackList()">tracks</legend>
+    <TrackListMenu v-if="showContextMenu" @add-to-queue="addToQueue"
+      @play-track-clicked="setSingleTrack(contextMenuData!)" :x=menuX :y=menuY />
+    <table>
+      <tbody>
+        <template v-for="( track, index ) in musikcubeStore.tracks">
+          <tr v-if="headlineNeedsToBePrinted(index)">
+            <th @click="playAlbum(track.album_id)" colspan="5">{{ track.album }}</th>
+          </tr>
+          <tr @contextmenu.prevent="openContextMenu($event, track)" :id="track.external_id" @click="setTrack(track)"
+            :class="track.external_id === currentTrack?.external_id ? 'trackRow activeRow' : 'trackRow'">
+            <td class=" trackNumber">{{ track.track }}</td>
+            <td class="trackName">{{ track.title }}</td>
+            <td class="trackLength">{{ secondsToTime(track.duration) }}</td>
+            <td class="trackArtist">{{ track.artist }}</td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+  </fieldset>
 </template>
 
 <style scoped>
+.titleInfo {
+  grid-area: titleInfo;
+  margin-top: 20px;
+  margin-right: 20px;
+  padding: 0;
+  overflow: auto;
+}
+
+legend {
+  margin-left: 10px;
+}
+
 table {
   width: 100%;
   margin: 0;

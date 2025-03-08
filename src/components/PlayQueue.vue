@@ -5,8 +5,10 @@ import { computed, ref, watch } from 'vue';
 import { usePlayQueueStore, type PlayQueueItem } from '@/stores/playQueue';
 import type { Track } from '@/types/Track';
 import secondsToTime from '@/common/secondsToTime';
+import { useUiStateStore } from '@/stores/uiState';
 
 const playQueue = usePlayQueueStore();
+const uiStateStore = useUiStateStore();
 
 const tracks = computed(() => {
   const result: PlayQueueItem[] = [];
@@ -47,27 +49,45 @@ const playTrackFromQueue = (track: Track) => {
   playQueue.playTrackFromQueue(track);
 }
 
+const changeTrackList = () => {
+  uiStateStore.setTrackListUiElement("TrackList");
+}
 </script>
 
 <template>
-  <table>
-    <tbody>
-      <template v-for="( track, index ) in tracks">
-        <tr @click="playTrackFromQueue(track.track)"
-          :class="track.track.external_id === currentTrack?.external_id ? 'trackRow activeRow' : 'trackRow'"
-          :id="track.track.external_id">
-          <td class="trackNumber">{{ index + 1 }}</td>
-          <td class="trackName">{{ track.track.title }}</td>
-          <td class="">{{ track.track.album }}</td>
-          <td class="trackLength">{{ secondsToTime(track.track.duration) }}</td>
-          <td class="trackArtist">{{ track.track.artist }}</td>
-        </tr>
-      </template>
-    </tbody>
-  </table>
+  <fieldset class="titleInfo border">
+    <legend class="pointer" @click="changeTrackList()">play queue</legend>
+    <table>
+      <tbody>
+        <template v-for="( track, index ) in tracks">
+          <tr @click="playTrackFromQueue(track.track)"
+            :class="track.track.external_id === currentTrack?.external_id ? 'trackRow activeRow' : 'trackRow'"
+            :id="track.track.external_id">
+            <td class="trackNumber">{{ index + 1 }}</td>
+            <td class="trackName">{{ track.track.title }}</td>
+            <td class="">{{ track.track.album }}</td>
+            <td class="trackLength">{{ secondsToTime(track.track.duration) }}</td>
+            <td class="trackArtist">{{ track.track.artist }}</td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+  </fieldset>
 </template>
 
 <style scoped>
+.titleInfo {
+  grid-area: titleInfo;
+  margin-top: 20px;
+  margin-right: 20px;
+  padding: 0;
+  overflow: auto;
+}
+
+legend {
+  margin-left: 10px;
+}
+
 table {
   width: 100%;
   margin: 0;

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import ArtistList from './components/ArtistList.vue';
-import TrackList from '@/components/TrackList.vue';
 import Player from './components/Player.vue';
 import { useMusikcubeStore } from './stores/musikcube';
 import { usePlayerStore } from '@/stores/player';
@@ -8,32 +7,19 @@ import { useUiStateStore } from './stores/uiState';
 
 useMusikcubeStore();
 usePlayerStore();
-const uiElementStore = useUiStateStore();
-
-const changeTrackList = () => {
-  uiElementStore.setTrackListUiElement(uiElementStore.trackListUiElement === TrackList ? "PlayQueue" : "TrackList");
-}
+const uiStateStore = useUiStateStore();
 
 </script>
 
 <template>
   <div class="layout">
-    <fieldset class="artistList border">
-      <legend>artists</legend>
-      <ArtistList />
-    </fieldset>
-    <fieldset class="titleInfo border">
-      <legend class="pointer" @click="changeTrackList()">{{ uiElementStore.trackListLegend() }}</legend>
-      <component :is="uiElementStore.trackListUiElement" />
-    </fieldset>
-    <fieldset class="playInfo border">
-      <legend>current track</legend>
-      <Player />
-    </fieldset>
+    <ArtistList />
+    <component :is="uiStateStore.trackListUiElement" />
+    <Player />
   </div>
 </template>
 
-<style scoped>
+<style>
 .layout {
   display: grid;
   grid-template-columns: 200px auto;
@@ -58,38 +44,6 @@ const changeTrackList = () => {
 
 .border:hover {
   border-color: #d75f5f;
-}
-
-.artistList {
-  grid-area: artistList;
-  margin-top: 20px;
-  margin-left: 20px;
-  overflow: auto;
-  padding: 0;
-}
-
-.artistList legend {
-  margin-left: 10px;
-}
-
-.titleInfo {
-  grid-area: titleInfo;
-  margin-top: 20px;
-  margin-right: 20px;
-  padding: 0;
-  overflow: auto;
-}
-
-.titleInfo legend {
-  margin-left: 10px;
-}
-
-.playInfo {
-  grid-area: playInfo;
-  margin-left: 20px;
-  margin-right: 20px;
-  margin-bottom: 20px;
-  padding: 10px;
 }
 
 .pointer {

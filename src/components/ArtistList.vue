@@ -47,16 +47,31 @@ watch(currentTrack, async (newTrack) => {
 </script>
 
 <template>
-  <div class="artistListContainer">
-    <ul>
-      <li v-for="artist in musikcubeStore.artists">
-        <div :id="'artistId' + artist.id" @click="(event) => selectArtist(event, artist.id)">{{ artist.value }}</div>
-      </li>
-    </ul>
-  </div>
+  <fieldset class="artistList border">
+    <legend>artists</legend>
+    <div class="artistListContainer">
+      <ul>
+        <li v-for="artist in musikcubeStore.artists">
+          <div :id="'artistId' + artist.id" @click="(event) => selectArtist(event, artist.id)">{{ artist.value }}</div>
+        </li>
+      </ul>
+    </div>
+  </fieldset>
 </template>
 
 <style scoped>
+.artistList {
+  grid-area: artistList;
+  margin-top: 20px;
+  margin-left: 20px;
+  overflow: auto;
+  padding: 0;
+}
+
+legend {
+  margin-left: 10px;
+}
+
 ul {
   margin: 0;
   width: 100%;
