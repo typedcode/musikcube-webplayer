@@ -18,7 +18,8 @@ const headlineNeedsToBePrinted = (index: number) => {
     return true;
   }
 
-  return musikcubeStore.tracks[index].album !== musikcubeStore.tracks[index - 1].album;
+  return musikcubeStore.tracks[index].album !== musikcubeStore.tracks[index - 1].album ||
+    musikcubeStore.tracks[index].disc !== musikcubeStore.tracks[index - 1].disc;
 }
 
 const setTrack = (track: Track) => {
@@ -93,7 +94,8 @@ const changeTrackList = () => {
       <tbody>
         <template v-for="( track, index ) in musikcubeStore.tracks">
           <tr v-if="headlineNeedsToBePrinted(index)">
-            <th @click="playAlbum(track.album_id)" colspan="5">{{ track.album }}</th>
+            <th @click="playAlbum(track.album_id)" colspan="5">{{ track.album }} <span class="disc"> - Disc {{
+              track.disc }}</span></th>
           </tr>
           <tr @contextmenu.prevent="openContextMenu($event, track)" :id="track.external_id" @click="setTrack(track)"
             :class="track.external_id === currentTrack?.external_id ? 'trackRow activeRow' : 'trackRow'">
@@ -175,5 +177,9 @@ th:hover {
 
 .trackArtist {
   width: 200px;
+}
+
+.disc {
+  color: #595f3f;
 }
 </style>

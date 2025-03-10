@@ -11,6 +11,7 @@ export type Track = {
     visual_artist_id: number,
     genre: string,
     genre_id: number,
-    duration: number
+    duration: number,
+    disc: string
 };
 
