@@ -61,11 +61,11 @@ const changeTrackList = () => {
       <tbody>
         <template v-for="( track, index ) in tracks">
           <tr @click="playTrackFromQueue(track.track)"
-            :class="track.track.external_id === currentTrack?.external_id ? 'trackRow activeRow' : 'trackRow'"
+            :class="track.track.external_id === currentTrack?.external_id ? 'activeRow' : 'trackRow'"
             :id="track.track.external_id">
             <td class="trackNumber">{{ index + 1 }}</td>
             <td class="trackName">{{ track.track.title }}</td>
-            <td class="">{{ track.track.album }}</td>
+            <td class="">{{ track.track.album }} <span>- Disc {{ track.track.disc }}</span></td>
             <td class="trackLength">{{ secondsToTime(track.track.duration) }}</td>
             <td class="trackArtist">{{ track.track.artist }}</td>
           </tr>
@@ -96,6 +96,12 @@ table {
 }
 
 .trackRow:hover {
+  background-color: #afd700;
+  color: #373d1f;
+  cursor: pointer;
+}
+
+.activeRow:hover {
   background-color: #afd700;
   color: #373d1f;
   cursor: pointer;
@@ -138,5 +144,13 @@ th {
 
 .trackArtist {
   width: 200px;
+}
+
+.trackRow span {
+  color: #595f3f;
+}
+
+.activeRow:hover span {
+  color: #595f3f;
 }
 </style>

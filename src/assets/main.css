@@ -20,3 +20,7 @@ body {
   color: #d7d75f;
   background-color: #585858;
 }
+
+.activeRow span {
+  color: #a3a31b;
+}
