@@ -65,8 +65,6 @@ export const usePlayerStore = defineStore('player', () => {
 
     startTrack();
 
-    duration.value = secondsToTime(currentTrackCacheEntry.audioBuffer.duration);
-
     if (playQueueStore.currentPlaylistItem?.nextTrack !== undefined) {
       cacheStore.getTrack(playQueueStore.currentPlaylistItem.nextTrack.track.external_id);
     }
@@ -113,7 +111,7 @@ export const usePlayerStore = defineStore('player', () => {
   const title = computed(() => currentTrack.value?.title ?? undefined);
   const artist = computed(() => currentTrack.value?.artist ?? undefined);
   const album = computed(() => currentTrack.value?.album ?? undefined);
-  const duration = ref();
+  const duration = computed(() => currentTrack.value?.duration ? secondsToTime(currentTrack.value.duration) : undefined);
   const elapsedTime = ref(0);
 
   return {
