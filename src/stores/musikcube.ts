@@ -1,9 +1,9 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { useWebSocketHandler } from './webSocketHandler';
-import { requestTracksByArtist, requestArtistsMessage, requestTracksMetadata } from './messages';
+import { requestTracksByArtist, requestArtistsMessage, requestTracksMetadata, requestPlaylistsMessage, requestTracksByPlaylist } from './messages';
 import { type Track } from '@/types/Track';
-import { type Artist } from '@/types/Artist';
+import { type QueryCategoryResult } from '@/types/QueryCategoryResult';
 
 export const useMusikcubeStore = defineStore('musikcube', () => {
   const loggedIn = ref(false);
@@ -16,6 +16,7 @@ export const useMusikcubeStore = defineStore('musikcube', () => {
     loggedIn.value = true;
     console.log("Login successfull");
     webSocketHandler.sendRequest(requestArtistsMessage, getArtistResponseHandler);
+    webSocketHandler.sendRequest(requestPlaylistsMessage, getPlaylistResponseHandler);
   }
 
   const getTracksResponseHandler = (data: any) => {
@@ -29,9 +30,17 @@ export const useMusikcubeStore = defineStore('musikcube', () => {
     tracks.value = trackIDs.value.map(id => trackData.value[id]);
   }
 
-  const getArtistResponseHandler = (data: any) => {
-    artists.value = data.options.data as Artist[];
+  const getPlaylistResponseHandler = (data: any) => {
+    playlists.value = data.options.data as QueryCategoryResult[];
   };
+
+  const getArtistResponseHandler = (data: any) => {
+    artists.value = data.options.data as QueryCategoryResult[];
+  };
+
+  const loadTracksForPlaylist = (playlistId: number) => {
+    webSocketHandler.sendRequest(requestTracksByPlaylist(playlistId), getTracksResponseHandler);
+  }
 
   const loadTracksForArtist = (artistId: number) => {
     webSocketHandler.sendRequest(requestTracksByArtist(artistId), getTracksResponseHandler);
@@ -40,15 +49,19 @@ export const useMusikcubeStore = defineStore('musikcube', () => {
   const webSocketHandler = useWebSocketHandler();
   webSocketHandler.init(loginResponseHandler);
 
-  const artists = ref<Artist[]>([]);
+  const artists = ref<QueryCategoryResult[]>([]);
   const trackData = ref<any[]>([]);
   const tracks = ref<Track[]>([]);
   const trackIDs = ref<number[]>([]);
+  const playlists = ref<QueryCategoryResult[]>([]);
 
   return {
     loggedIn,
     artists,
     tracks,
-    loadTracksForArtist
+    loadTracksForArtist,
+    loadTracksForPlaylist,
+    playlists
   }
 })
+

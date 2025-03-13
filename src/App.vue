@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import ArtistList from './components/ArtistList.vue';
 import Player from './components/Player.vue';
 import { useMusikcubeStore } from './stores/musikcube';
 import { usePlayerStore } from '@/stores/player';
@@ -13,7 +12,7 @@ const uiStateStore = useUiStateStore();
 
 <template>
   <div class="layout">
-    <ArtistList />
+    <component :is="uiStateStore.categoryListUiElement" />
     <component :is="uiStateStore.trackListUiElement" />
     <Player />
   </div>

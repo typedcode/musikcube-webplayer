@@ -1,4 +1,4 @@
-export type Artist = {
+export type QueryCategoryResult = {
     id: number,
     value: string
 };

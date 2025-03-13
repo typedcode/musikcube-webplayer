@@ -10,6 +10,16 @@ const requestArtistsMessage = {
   }
 };
 
+const requestPlaylistsMessage = {
+  "name": "query_category",
+  "type": "request",
+  "id": uuid(),
+  "device_id": "",
+  "options": {
+    "category": "playlists",
+  }
+};
+
 const requestTracksByArtist = (artistId: number) => {
   return {
     "name": "query_tracks_by_category",
@@ -19,6 +29,20 @@ const requestTracksByArtist = (artistId: number) => {
     "options": {
       "category": "artist",
       "id": artistId,
+    }
+  }
+};
+
+
+const requestTracksByPlaylist = (playlistId: number) => {
+  return {
+    "name": "query_tracks_by_category",
+    "type": "request",
+    "id": uuid(),
+    "device_id": "",
+    "options": {
+      "category": "playlists",
+      "id": playlistId,
     }
   }
 };
@@ -38,5 +62,7 @@ const requestTracksMetadata = (trackIds: number[]) => {
 export {
   requestArtistsMessage,
   requestTracksByArtist,
-  requestTracksMetadata
+  requestTracksMetadata,
+  requestPlaylistsMessage,
+  requestTracksByPlaylist
 }

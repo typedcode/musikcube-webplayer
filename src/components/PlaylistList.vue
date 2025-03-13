@@ -5,21 +5,21 @@ import { useMusikcubeStore } from '../stores/musikcube';
 import { usePlayQueueStore } from '@/stores/playQueue';
 import { useUiStateStore } from '@/stores/uiState';
 
-const selectedArtistDiv = ref<HTMLDivElement | undefined>(undefined);
+const selectedPlaylistDiv = ref<HTMLDivElement | undefined>(undefined);
 const musikcubeStore = useMusikcubeStore();
 const uiStateStore = useUiStateStore();
 
-const selectArtist = (event: MouseEvent, artistId: number) => {
-  if (selectedArtistDiv.value !== undefined) {
-    selectedArtistDiv.value.classList.remove("selected");
+const selectPlaylist = (event: MouseEvent, playlistId: number) => {
+  if (selectedPlaylistDiv.value !== undefined) {
+    selectedPlaylistDiv.value.classList.remove("selected");
   }
 
   const target = event.target as HTMLDivElement;
   target.classList.add("selected");
 
-  selectedArtistDiv.value = target;
+  selectedPlaylistDiv.value = target;
   uiStateStore.setTrackListUiElement('TrackList');
-  musikcubeStore.loadTracksForArtist(artistId);
+  musikcubeStore.loadTracksForPlaylist(playlistId);
 }
 
 const playQueue = usePlayQueueStore();
@@ -45,18 +45,19 @@ watch(currentTrack, async (newTrack) => {
 });
 
 const changeCategoryList = () => {
-  uiStateStore.setCategoryListUiElement("PlaylistList");
+  uiStateStore.setCategoryListUiElement("ArtistList");
 }
 
 </script>
 
 <template>
   <fieldset class="artistList border">
-    <legend class="pointer" @click="changeCategoryList()">artists</legend>
+    <legend class="pointer" @click="changeCategoryList()">playlists</legend>
     <div class="artistListContainer">
       <ul>
-        <li v-for="artist in musikcubeStore.artists">
-          <div :id="'artistId' + artist.id" @click="(event) => selectArtist(event, artist.id)">{{ artist.value }}</div>
+        <li v-for="playlist in musikcubeStore.playlists">
+          <div :id="'artistId' + playlist.id" @click="(event) => selectPlaylist(event, playlist.id)">{{ playlist.value
+            }}</div>
         </li>
       </ul>
     </div>
