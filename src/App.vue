@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import Player from './components/Player.vue';
 import { useMusikcubeStore } from './stores/musikcube';
-import { usePlayerStore } from '@/stores/player';
 import { useUiStateStore } from './stores/uiState';
 
 useMusikcubeStore();
-usePlayerStore();
 const uiStateStore = useUiStateStore();
 
 </script>

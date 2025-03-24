@@ -1,11 +1,36 @@
 <script setup lang="ts">
 
+import { onMounted, useTemplateRef, watch, ref } from 'vue';
 import { storeToRefs } from 'pinia';
-import { usePlayerStore } from '../stores/player';
+import { usePlayerStore } from '@/stores/player';
+import secondsToTime from '@/common/secondsToTime';
 
 const playerStore = usePlayerStore();
 
-const { title, artist, album, state, duration, elapsedTime } = storeToRefs(playerStore);
+const { title, artist, album, duration, state } = storeToRefs(playerStore);
+const audioElement = useTemplateRef<HTMLAudioElement>('audioElement');
+
+onMounted(() => {
+  const element = audioElement.value! as HTMLAudioElement;
+  playerStore.init(element);
+});
+
+const elapsedTimeTimer = ref(0);
+
+watch(state, (newState) => {
+  if (newState === "playing") {
+    elapsedTimeTimer.value = setInterval(setElapsedTime, 1000);
+  }
+  else {
+    clearInterval(elapsedTimeTimer.value);
+  }
+});
+
+const setElapsedTime = () => {
+  elapsedTime.value = secondsToTime(audioElement.value!.currentTime);
+}
+
+const elapsedTime = ref("");
 
 const stateClicked = () => {
   switch (state.value) {
@@ -25,6 +50,7 @@ const stateClicked = () => {
 <template>
   <fieldset class="playInfo border">
     <legend>current track</legend>
+    <audio id="hiddenAudio" ref="audioElement" hidden />
     <div v-if="title !== undefined">
       <div>
         <span :class="state !== 'loading' ? 'cursor' : ''" @click="stateClicked">{{ state }}</span> <span

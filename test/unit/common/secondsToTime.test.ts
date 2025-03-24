@@ -3,11 +3,15 @@ import secondsToTime from '../../../src/common/secondsToTime';
 
 describe('secondsToTime', () => {
     test('even seconds', () => {
-        expect(secondsToTime(53)).toBe("53");
+        expect(secondsToTime(53)).toBe("0:53");
+    });
+
+    test('less then 10 seconds', () => {
+        expect(secondsToTime(8)).toBe("0:08");
     });
 
     test('seconds with some milliseconds', () => {
-        expect(secondsToTime(53.28373)).toBe("53");
+        expect(secondsToTime(53.28373)).toBe("0:53");
     });
 
     test('whole minutes', () => {

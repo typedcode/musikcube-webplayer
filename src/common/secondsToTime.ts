@@ -25,7 +25,7 @@ export default (seconds: number): string => {
     }
 
     if (result === "") {
-        result += absSeconds;
+        result += "0:" + zeroPad(absSeconds);
     }
     else {
         result += ":" + zeroPad(absSeconds);
