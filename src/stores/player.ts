@@ -1,85 +1,90 @@
-import { ref, watch, computed } from 'vue'
-import { defineStore, storeToRefs } from 'pinia'
-import { usePlayQueueStore } from '@/stores/playQueue';
-import secondsToTime from '@/common/secondsToTime';
+import { ref, watch, computed } from "vue";
+import { defineStore, storeToRefs } from "pinia";
+import { usePlayQueueStore } from "@/stores/playQueue";
+import secondsToTime from "@/common/secondsToTime";
 
-export const usePlayerStore = defineStore('player', () => {
-  const audioElement = ref<HTMLAudioElement>();
-  const playQueueStore = usePlayQueueStore();
-  const { currentTrack } = storeToRefs(playQueueStore);
-  const state = ref<'loading' | 'playing' | 'paused' | 'stopped'>();
-  let elapsedTimeTimer: ReturnType<typeof setInterval>;
+export const usePlayerStore = defineStore("player", () => {
+    const audioElement = ref<HTMLAudioElement>();
+    const playQueueStore = usePlayQueueStore();
+    const { currentTrack } = storeToRefs(playQueueStore);
+    const state = ref<"loading" | "playing" | "paused" | "stopped">();
+    let elapsedTimeTimer: ReturnType<typeof setInterval>;
 
-  const clearPlayer = () => {
-    clearInterval(elapsedTimeTimer);
-  };
+    const clearPlayer = () => {
+        clearInterval(elapsedTimeTimer);
+    };
 
-  const currentTrackId = ref<string>();
+    const currentTrackId = ref<string>();
 
-  watch(currentTrack, async (newTrack) => {
-    elapsedTime.value = 0;
+    watch(currentTrack, async (newTrack) => {
+        elapsedTime.value = 0;
 
-    currentTrackId.value = newTrack?.external_id;
+        currentTrackId.value = newTrack?.external_id;
 
-    clearPlayer();
+        clearPlayer();
 
-    if (newTrack === undefined) {
-      state.value = 'stopped';
-      return;
-    }
+        if (newTrack === undefined) {
+            state.value = "stopped";
+            return;
+        }
 
-    console.log("Player: " + JSON.stringify(newTrack));
+        console.log("Player: " + JSON.stringify(newTrack));
 
-    if (currentTrackId.value !== newTrack.external_id) {
-      return;
-    }
+        if (currentTrackId.value !== newTrack.external_id) {
+            return;
+        }
 
-    startTrack();
-  });
+        startTrack();
+    });
 
-  const startTrack = () => {
-    audioElement.value!.src = `http://${import.meta.env.VITE_MUSIKCUBE_PROXY_ADDRESS}:${import.meta.env.VITE_MUSIKCUBE_PROXY_PORT}/api?externalId=${currentTrack.value?.external_id}`;
-    audioElement.value!.play();
-    state.value = 'playing';
-  }
+    const startTrack = () => {
+        audioElement.value!.src = `http://${import.meta.env.VITE_MUSIKCUBE_PROXY_ADDRESS}:${import.meta.env.VITE_MUSIKCUBE_PROXY_PORT}/api?externalId=${currentTrack.value?.external_id}`;
+        audioElement.value!.play();
+        state.value = "playing";
+    };
 
-  const ended = async () => {
-    clearInterval(elapsedTimeTimer);
-    playQueueStore.setNextTrack();
-  }
+    const ended = async () => {
+        clearInterval(elapsedTimeTimer);
+        playQueueStore.setNextTrack();
+    };
 
-  const pauseTrack = () => {
-    audioElement.value!.pause();
-    state.value = 'paused';
-  }
+    const pauseTrack = () => {
+        audioElement.value!.pause();
+        state.value = "paused";
+    };
 
-  const resumeTrack = () => {
-    audioElement.value!.play();
-    state.value = 'playing';
-  }
+    const resumeTrack = () => {
+        audioElement.value!.play();
+        state.value = "playing";
+    };
 
-  const title = computed(() => currentTrack.value?.title ?? undefined);
-  const artist = computed(() => currentTrack.value?.artist ?? undefined);
-  const album = computed(() => currentTrack.value?.album ?? undefined);
-  const duration = computed(() => currentTrack.value?.duration ? secondsToTime(currentTrack.value.duration) : undefined);
-  const elapsedTime = ref(0);
+    const title = computed(() => currentTrack.value?.title ?? undefined);
+    const artist = computed(() => currentTrack.value?.artist ?? undefined);
+    const album = computed(() => currentTrack.value?.album ?? undefined);
+    const duration = computed(() =>
+        currentTrack.value?.duration
+            ? secondsToTime(currentTrack.value.duration)
+            : undefined,
+    );
+    const elapsedTime = ref(0);
 
-  const init = (ae: HTMLAudioElement) => {
-    audioElement.value = ae;
-    audioElement.value.addEventListener("ended", ended);
-  };
+    const init = (ae: HTMLAudioElement) => {
+        audioElement.value = ae;
+        audioElement.value.addEventListener("ended", ended);
+    };
 
-  return {
-    title,
-    artist,
-    album,
-    state,
-    duration,
-    elapsedTime: computed(() => secondsToTime(elapsedTime.value / 1000) ?? '0'),
-    pauseTrack,
-    resumeTrack,
-    currentTrackId,
-    init
-  }
+    return {
+        title,
+        artist,
+        album,
+        state,
+        duration,
+        elapsedTime: computed(
+            () => secondsToTime(elapsedTime.value / 1000) ?? "0",
+        ),
+        pauseTrack,
+        resumeTrack,
+        currentTrackId,
+        init,
+    };
 });
-

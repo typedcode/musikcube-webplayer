@@ -1,5 +1,4 @@
 export type QueryCategoryResult = {
-    id: number,
-    value: string
+    id: number;
+    value: string;
 };
-

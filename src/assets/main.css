@@ -1,26 +1,26 @@
 html {
-  height: 100%;
-  margin: 0;
-  font-family: monospace;
-  color: #c6c6c6;
+    height: 100%;
+    margin: 0;
+    font-family: monospace;
+    color: #c6c6c6;
 }
 
 body {
-  height: 100%;
-  margin: 0;
-  background-color: #242424;
+    height: 100%;
+    margin: 0;
+    background-color: #242424;
 }
 
 #app {
-  font-weight: normal;
-  height:100%;
+    font-weight: normal;
+    height: 100%;
 }
 
 .activeRow {
-  color: #d7d75f;
-  background-color: #585858;
+    color: #d7d75f;
+    background-color: #585858;
 }
 
 .activeRow span {
-  color: #a3a31b;
+    color: #a3a31b;
 }

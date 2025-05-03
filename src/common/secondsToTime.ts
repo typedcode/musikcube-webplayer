@@ -1,4 +1,4 @@
-const zeroPad = (num: number) => String(num).padStart(2, '0');
+const zeroPad = (num: number) => String(num).padStart(2, "0");
 
 export default (seconds: number): string => {
     let absSeconds = Math.floor(seconds);
@@ -14,24 +14,19 @@ export default (seconds: number): string => {
     if (absSeconds >= 60) {
         if (result === "") {
             result += Math.floor(absSeconds / 60);
-        }
-        else {
+        } else {
             result += ":" + zeroPad(Math.floor(absSeconds / 60));
         }
         absSeconds %= 60;
-    }
-    else if (result !== "") {
+    } else if (result !== "") {
         result += ":00";
     }
 
     if (result === "") {
         result += "0:" + zeroPad(absSeconds);
-    }
-    else {
+    } else {
         result += ":" + zeroPad(absSeconds);
     }
 
     return result;
 };
-
-
