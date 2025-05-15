@@ -3,15 +3,16 @@ import { onMounted, useTemplateRef, watch, ref } from "vue";
 import { storeToRefs } from "pinia";
 import { usePlayerStore } from "@/stores/player";
 import secondsToTime from "@/common/secondsToTime";
+import { useMediaSessionStore } from "@/stores/mediaSession";
 
 const playerStore = usePlayerStore();
-
 const { title, artist, album, duration, state } = storeToRefs(playerStore);
 const audioElement = useTemplateRef<HTMLAudioElement>("audioElement");
 
 onMounted(() => {
     const element = audioElement.value! as HTMLAudioElement;
     playerStore.init(element);
+    useMediaSessionStore().init(element);
 });
 
 const elapsedTimeTimer = ref(0);
@@ -55,7 +56,7 @@ const stateClicked = () => {
                     @click="stateClicked"
                     >{{ state }}</span
                 >
-                <span class="highlight">{{ title }}</span> by
+                <span class="highlight">&nbsp;{{ title }}</span> by
                 <span class="highlight">{{ artist }}</span> from
                 <span class="highlight">{{ album }}</span>
             </div>
