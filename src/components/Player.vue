@@ -15,7 +15,7 @@ onMounted(() => {
     useMediaSessionStore().init(element);
 });
 
-const elapsedTimeTimer = ref(0);
+const elapsedTimeTimer = ref<ReturnType<typeof setInterval>>();
 
 watch(state, (newState) => {
     if (newState === "playing") {
