@@ -29,7 +29,7 @@ const setElapsedTime = () => {
     elapsedTime.value = secondsToTime(audioElement.value!.currentTime);
 };
 
-const elapsedTime = ref("");
+const elapsedTime = ref("0:00");
 
 const stateClicked = () => {
     switch (state.value) {
@@ -60,9 +60,7 @@ const stateClicked = () => {
                 <span class="highlight">{{ artist }}</span> from
                 <span class="highlight">{{ album }}</span>
             </div>
-            <div v-if="state !== 'loading'">
-                {{ elapsedTime }} / {{ duration }}
-            </div>
+            {{ elapsedTime }} / {{ duration }}
         </div>
     </fieldset>
 </template>
