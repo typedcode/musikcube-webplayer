@@ -71,6 +71,27 @@ export const usePlayerStore = defineStore("player", () => {
     const init = (ae: HTMLAudioElement) => {
         audioElement.value = ae;
         audioElement.value.addEventListener("ended", ended);
+        volumeRef.value = audioElement.value.volume;
+    };
+
+    const volumeRef = ref(1);
+
+    const increaseVolume = () => {
+        console.log("increaseVolume");
+        volumeRef.value = Math.min(volumeRef.value + 0.03, 1);
+
+        audioElement.value!.volume = volumeRef.value;
+    };
+
+    const decreaseVolume = () => {
+        console.log("decreaseVolume");
+        volumeRef.value = Math.max(volumeRef.value - 0.03, 0);
+
+        audioElement.value!.volume = volumeRef.value;
+    };
+
+    const volume = () => {
+        return Math.round(volumeRef.value * 100);
     };
 
     return {
@@ -86,5 +107,8 @@ export const usePlayerStore = defineStore("player", () => {
         resumeTrack,
         currentTrackId,
         init,
+        volume,
+        increaseVolume,
+        decreaseVolume,
     };
 });

@@ -4,6 +4,7 @@ import { storeToRefs } from "pinia";
 import { usePlayerStore } from "@/stores/player";
 import secondsToTime from "@/common/secondsToTime";
 import { useMediaSessionStore } from "@/stores/mediaSession";
+import VolumeControle from "@/components/VolumeControle.vue";
 
 const playerStore = usePlayerStore();
 const { title, artist, album, duration, state } = storeToRefs(playerStore);
@@ -49,18 +50,23 @@ const stateClicked = () => {
     <fieldset class="playInfo border">
         <legend>current track</legend>
         <audio id="hiddenAudio" ref="audioElement" hidden />
-        <div v-if="title !== undefined">
-            <div>
-                <span
-                    :class="state !== 'loading' ? 'cursor' : ''"
-                    @click="stateClicked"
-                    >{{ state }}</span
-                >
-                <span class="highlight">&nbsp;{{ title }}</span> by
-                <span class="highlight">{{ artist }}</span> from
-                <span class="highlight">{{ album }}</span>
+        <div class="layout">
+            <div class="trackInfo">
+                <div v-if="title !== undefined">
+                    <span
+                        :class="state !== 'loading' ? 'cursor' : ''"
+                        @click="stateClicked"
+                    >
+                        {{ state }}
+                    </span>
+                    <span class="highlight">&nbsp;{{ title }}</span> by
+                    <span class="highlight">{{ artist }}</span> from
+                    <span class="highlight">{{ album }}</span>
+                </div>
+                <div v-else>No track selected yet</div>
             </div>
-            {{ elapsedTime }} / {{ duration }}
+            <div class="trackTime">{{ elapsedTime }} / {{ duration }}</div>
+            <VolumeControle class="volumeControle" />
         </div>
     </fieldset>
 </template>
@@ -72,6 +78,32 @@ const stateClicked = () => {
     margin-right: 20px;
     margin-bottom: 20px;
     padding: 10px;
+}
+
+.layout {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: auto auto;
+    grid-template-areas:
+        "trackInfo volumeControle"
+        "trackTime playlistControle";
+    grid-column-gap: 5px;
+    grid-row-gap: 5px;
+    width: auto;
+    height: auto;
+}
+
+.trackInfo {
+    grid-area: trackInfo;
+}
+
+.trackTime {
+    grid-area: trackTime;
+}
+
+.volumeControle {
+    grid-area: volumeControle;
+    justify-self: end;
 }
 
 .highlight {
