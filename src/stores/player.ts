@@ -77,15 +77,13 @@ export const usePlayerStore = defineStore("player", () => {
     const volumeRef = ref(1);
 
     const increaseVolume = () => {
-        console.log("increaseVolume");
-        volumeRef.value = Math.min(volumeRef.value + 0.03, 1);
+        volumeRef.value = Math.min(volumeRef.value + 0.02, 1);
 
         audioElement.value!.volume = volumeRef.value;
     };
 
     const decreaseVolume = () => {
-        console.log("decreaseVolume");
-        volumeRef.value = Math.max(volumeRef.value - 0.03, 0);
+        volumeRef.value = Math.max(volumeRef.value - 0.02, 0);
 
         audioElement.value!.volume = volumeRef.value;
     };
