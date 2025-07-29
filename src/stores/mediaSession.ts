@@ -47,7 +47,16 @@ export const useMediaSessionStore = defineStore("mediaSession", () => {
         navigator.mediaSession.setActionHandler("nexttrack", nexttrack);
     };
 
+    const setPlaybackState = (state: MediaSessionPlaybackState) => {
+        if( !navigator.mediaSession ) {
+            return
+        }
+
+        navigator.mediaSession.playbackState = state;
+    }
+
     return {
         init,
+        setPlaybackState
     };
 });

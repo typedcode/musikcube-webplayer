@@ -2,12 +2,15 @@ import { ref, watch, computed } from "vue";
 import { defineStore, storeToRefs } from "pinia";
 import { usePlayQueueStore } from "@/stores/playQueue";
 import secondsToTime from "@/common/secondsToTime";
+import { useMediaSessionStore } from "@/stores/mediaSession";
 
 export const usePlayerStore = defineStore("player", () => {
     const audioElement = ref<HTMLAudioElement>();
     const playQueueStore = usePlayQueueStore();
+    const mediaSession = useMediaSessionStore();
+
     const { currentTrack } = storeToRefs(playQueueStore);
-    const state = ref<"loading" | "playing" | "paused" | "stopped">();
+    const state = ref< "playing" | "paused" | "stopped">();
     let elapsedTimeTimer: ReturnType<typeof setInterval>;
 
     const clearPlayer = () => {
@@ -41,6 +44,7 @@ export const usePlayerStore = defineStore("player", () => {
         audioElement.value!.src = `http://${import.meta.env.VITE_MUSIKCUBE_PROXY_ADDRESS}:${import.meta.env.VITE_MUSIKCUBE_PROXY_PORT}/api?externalId=${currentTrack.value?.external_id}`;
         audioElement.value!.play();
         state.value = "playing";
+        mediaSession.setPlaybackState("playing");
     };
 
     const ended = async () => {
@@ -51,11 +55,13 @@ export const usePlayerStore = defineStore("player", () => {
     const pauseTrack = () => {
         audioElement.value!.pause();
         state.value = "paused";
+        mediaSession.setPlaybackState("paused");
     };
 
     const resumeTrack = () => {
         audioElement.value!.play();
         state.value = "playing";
+        mediaSession.setPlaybackState("playing");
     };
 
     const title = computed(() => currentTrack.value?.title ?? undefined);
