@@ -29,29 +29,29 @@ musikcube-webplayer is a free to use web-frontend for the [musikcube](https://mu
 
 ## (planned) features
 
-[x] play tracks
-[x] play all tracks of an artist
-[x] play an album
-[x] add song to playqueue
-[x] adjust volume
-[x] pause/resume track
-[x] show artists
-[x] show albums of artist
-[x] pause/resume via multi media keys
-[x] show playqueue
-[x] show playlists
-[x] play playlist
-[ ] add album to playqueue
-[ ] create playlist
-[ ] add track to playlist
-[ ] add album to playlist
-[ ] remove track from playlist
-[ ] remoce track from playqueue
-[ ] rename playlist
-[ ] integrate album art to mediasession
-[ ] save volume settings for next session
-[ ] save last played artist/playlist/playqueue and track
-[ ] repeat
-[ ] shuffle
-[ ] next track
-[ ] previous track
+- [x] play tracks
+- [x] play all tracks of an artist
+- [x] play an album
+- [x] add song to playqueue
+- [x] adjust volume
+- [x] pause/resume track
+- [x] show artists
+- [x] show albums of artist
+- [x] pause/resume via multi media keys
+- [x] show playqueue
+- [x] show playlists
+- [x] play playlist
+- [ ] add album to playqueue
+- [ ] create playlist
+- [ ] add track to playlist
+- [ ] add album to playlist
+- [ ] remove track from playlist
+- [ ] remoce track from playqueue
+- [ ] rename playlist
+- [ ] integrate album art to mediasession
+- [ ] save volume settings for next session
+- [ ] save last played artist/playlist/playqueue and track
+- [ ] repeat
+- [ ] shuffle
+- [ ] next track
+- [ ] previous track
